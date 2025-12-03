@@ -10,9 +10,9 @@ function NavBar({ pages }) {
                 Home
             </NavLink>
 
-            {pages.map(({ path, title }) => {
+            {pages.map(({ path, title }, index) => {
                 return (
-                    <NavLink to={path} className="mr-4 hover:underline hover:decoration-dotted decoration-dotted transition-all duration-300 hover:text-blue-300">
+                    <NavLink key={index} to={path} className="mr-4 hover:underline hover:decoration-dotted decoration-dotted transition-all duration-300 hover:text-blue-300">
                         {title}
                     </NavLink>
                 )
