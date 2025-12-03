@@ -1,13 +1,13 @@
 // REQUIREMENTS
-// * Users should be able to register
-// * Admin page should list all users
-// * Design/layout of content
+// * Users should be able to register --- DONE
+// * Admin page should list all users --- DONE
+// * Design/layout of content --- DONE
+// * Responsive
 
 // * Admin page should have a password protected route
 // * Users should get a confirmation email
 
-// * Signup form validation
-// * Automated testing
+// * Signup form validation --- DONE
 
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import NavBar from "./components/NavBar.jsx";
@@ -16,6 +16,7 @@ import NotFound from "./components/NotFound.jsx";
 import AdminPage from "./components/AdminPage.jsx";
 import SignUpPage from "./components/SignUpPage.jsx";
 import ConfirmationPage from "./components/ConfirmationPage.jsx";
+import AdminLoginPage from "./components/AdminLoginPage.jsx";
 
 const pages = [
     { path: "signup/", title: "Sign Up" },
@@ -34,6 +35,7 @@ const router = createBrowserRouter([
         children: [
             { path: "/", element: <HomePage /> },
             { path: "admin/", element: <AdminPage /> },
+            { path: "admin/login", element: <AdminLoginPage /> },
             { path: "signup/", element: <SignUpPage /> },
             { path: "confirmation/", element: <ConfirmationPage /> },
             { path: "*", element: <NotFound /> },
