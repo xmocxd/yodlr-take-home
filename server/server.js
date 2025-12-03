@@ -6,6 +6,8 @@ import users from './routes/users.js';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(express.json()); 
+
 app.use('/users', users);
 
 app.get('/message', (req, res) => {

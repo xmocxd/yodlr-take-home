@@ -15,6 +15,7 @@ import HomePage from "./components/HomePage.jsx";
 import NotFound from "./components/NotFound.jsx";
 import AdminPage from "./components/AdminPage.jsx";
 import SignUpPage from "./components/SignUpPage.jsx";
+import ConfirmationPage from "./components/ConfirmationPage.jsx";
 
 const pages = [
     { path: "signup/", title: "Sign Up" },
@@ -34,6 +35,7 @@ const router = createBrowserRouter([
             { path: "/", element: <HomePage /> },
             { path: "admin/", element: <AdminPage /> },
             { path: "signup/", element: <SignUpPage /> },
+            { path: "confirmation/", element: <ConfirmationPage /> },
             { path: "*", element: <NotFound /> },
         ],
     },

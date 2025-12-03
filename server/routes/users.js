@@ -3,10 +3,9 @@ import _ from 'lodash';
 
 import usersData from '../../init_data.json' with { type: 'json' };
 
-const users = usersData.data;
+let users = usersData.data;
 
 const router = express.Router();
-
 
 var curId = _.size(users);
 
@@ -17,13 +16,14 @@ router.get('/', function(req, res) {
 
 /* Create a new user */
 router.post('/', function(req, res) {
+  console.log('Creating user:', req.body);
+
   var user = req.body;
   user.id = curId++;
   if (!user.state) {
     user.state = 'pending';
   }
   users[user.id] = user;
-  log.info('Created user', user);
   res.json(user);
 });
 
@@ -41,18 +41,20 @@ router.delete('/:id', function(req, res) {
   var user = users[req.params.id];
   delete users[req.params.id];
   res.status(204);
-  log.info('Deleted user', user);
   res.json(user);
 });
 
 /* Update a user by id */
 router.put('/:id', function(req, res, next) {
   var user = req.body;
+  console.log('Updating user:', req.body);
+  console.log('Param id:', req.params.id);
+  console.log('Body id:', user.id);
+  
   if (user.id != req.params.id) {
     return next(new Error('ID paramter does not match body'));
   }
   users[user.id] = user;
-  log.info('Updating user', user);
   res.json(user);
 });
 

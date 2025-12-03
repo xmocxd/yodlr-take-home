@@ -1,4 +1,10 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+
+
+
+
 
 function SignUpPage() {
 
@@ -9,6 +15,8 @@ function SignUpPage() {
         lastName: { value: '', text: 'Last Name', type: 'text', validator: /^[a-zA-Z\-. ]+$/, valid: true },
         agreeTerms: { value: false, text: 'Agree to Terms and Conditions', type: 'checkbox', validator: true, valid: true }
     };
+
+    const navigate = useNavigate();
 
     const [formState, setFormState] = useState(initial);
     const [formValid, setFormValid] = useState(true);
@@ -42,6 +50,21 @@ function SignUpPage() {
         return { formValid, newState };
     }
 
+    function addUser(user) {
+        // send POST request to add user
+        axios.post('/api/users', {
+            firstName: user.firstName.value,
+            lastName: user.lastName.value,
+            email: user.email.value,
+            state: 'pending'
+        }).then(response => {
+            console.log('User added:', response.data);
+            navigate('/confirmation', { state: { message: 'Thank you for signing up! Please check your email for confirmation and next steps.' } });
+        }).catch(error => {
+            console.error('Error adding user:', error);
+        });
+    }
+
 
     function updateField({ field, value }) {
         // update field value in state
@@ -60,7 +83,7 @@ function SignUpPage() {
         setFormValid(formValid);
 
         if (formValid) {
-            // addUser(newState);
+            addUser(newState);
             console.log('Form submitted:', newState);
             setFormState(initial); // clear form on submit
         } else {
@@ -69,7 +92,7 @@ function SignUpPage() {
     }
 
     return (
-        <div className="max-w-2xl mx-auto min-w-4/12 py-30">
+        <div className="max-w-2xl mx-auto min-w-[600px] py-30">
             <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl shadow-2xl p-8 border border-slate-700">
                 <h1 className="text-5xl font-bold mb-6 text-white">Sign Up</h1>
                 <p className="text-xl md:text-2xl text-slate-300 font-light mb-8">

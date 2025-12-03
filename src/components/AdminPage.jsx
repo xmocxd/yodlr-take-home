@@ -5,12 +5,38 @@ function AdminPage() {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
-        // get user list
+        refreshUsers();
+    }, []);
+
+    function refreshUsers() {
+        // get user list and update state
         axios.get('/api/users')
             .then(response => {
                 setUsers(response.data);
             });
-    }, []);
+    }
+
+    function deactivateUser(userId) {
+        // update user state to deactivated
+        let user = users.find(u => u.id === userId);
+        axios.put(`/api/users/${userId}`, { ...user, state: 'deactivated' })
+            .then(response => {
+                refreshUsers();
+            })
+            .catch(error => {
+                console.error('Error updating user:', error);
+            });
+    }
+
+    function deleteUser(userId) {
+        // delete user
+        axios.delete(`/api/users/${userId}`)
+            .then(() => {
+                refreshUsers();
+            }).catch(error => {
+                console.error('Error deleting user:', error);
+            });
+    }
 
     return (
         <div className="max-w-6xl mx-auto min-w-10/12">
@@ -20,7 +46,7 @@ function AdminPage() {
                     View and Modify User Accounts
                 </p>
                 <p className="text-lg mb-8 font-bold text-blue-300">Registered Users:</p>
-                <p className="text-lg text-slate-300">
+                <div className="text-lg text-slate-300">
                     <table className="w-full table-auto border-collapse">
                         <thead>
                             <tr>
@@ -30,6 +56,7 @@ function AdminPage() {
                                 <th className="border-b border-slate-600 pb-2 text-left">Email</th>
                                 <th className="border-b border-slate-600 pb-2 text-left">Status</th>
                                 <th className="border-b border-slate-600 pb-2 text-left">Deactivate</th>
+                                <th className="border-b border-slate-600 pb-2 text-left">Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -40,16 +67,24 @@ function AdminPage() {
                                     <td className="border-b border-slate-600 py-2">{user.lastName}</td>
                                     <td className="border-b border-slate-600 py-2">{user.email}</td>
                                     <td className={`border-b border-slate-600 py-2
-                                        ${
-                                            user.state === 'active' ? 'text-green-400' :
+                                        ${user.state === 'active' ? 'text-green-400' :
                                             user.state === 'pending' ? 'text-amber-400' : 'text-red-400'
                                         }
                                         `}>{user.state}</td>
                                     <td className="border-b border-slate-600 py-2">
                                         {user.state === 'active' ? (
-                                            <button className="rounded-full bg-red-600 text-white hover:bg-red-700 active:bg-red-800 cursor-pointer p-2 transition-all duration-200 hover:scale-110 transform" title="Deactivate">
+                                            <button onClick={() => deactivateUser(user.id)} className="rounded-full bg-red-600 text-white hover:bg-red-700 active:bg-red-800 cursor-pointer p-2 transition-all duration-200 hover:scale-110 transform" title="Deactivate">
                                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                            </button>
+                                        ) : ''}
+                                    </td>
+                                    <td className="border-b border-slate-600 py-2">
+                                        {user.state === 'deactivated' || user.state === 'pending' ? (
+                                            <button onClick={() => deleteUser(user.id)} className="rounded-full bg-red-600 text-white hover:bg-red-700 active:bg-red-800 cursor-pointer p-2 transition-all duration-200 hover:scale-110 transform" title="Delete">
+                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                 </svg>
                                             </button>
                                         ) : ''}
@@ -58,7 +93,7 @@ function AdminPage() {
                             ))}
                         </tbody>
                     </table>
-                </p>
+                </div>
             </div>
         </div>
     );
