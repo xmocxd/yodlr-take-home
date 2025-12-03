@@ -23,11 +23,12 @@ const pages = [
 
 const router = createBrowserRouter([
     {
+        // main element to display routes within
         element: (
-            <>
+            <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 px-4">
                 <NavBar pages={pages} />
                 <Outlet />
-            </>
+            </div>
         ),
         children: [
             { path: "/", element: <HomePage /> },
