@@ -1,5 +1,5 @@
-var winston = require('winston');
-var expressWinston = require('express-winston');
+import winston from 'winston';
+import expressWinston from 'express-winston';
 
 /*
  *  Setup logging for the application

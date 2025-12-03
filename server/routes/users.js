@@ -1,10 +1,13 @@
-var express = require('express');
-var router = express.Router();
-var _ = require('lodash');
-var logger = require('../lib/logger');
-var log = logger();
+import express from 'express';
+import _ from 'lodash';
 
-var users = require('../init_data.json').data;
+import usersData from '../../init_data.json' with { type: 'json' };
+
+const users = usersData.data;
+
+const router = express.Router();
+
+
 var curId = _.size(users);
 
 /* GET users listing. */
@@ -53,5 +56,4 @@ router.put('/:id', function(req, res, next) {
   res.json(user);
 });
 
-
-module.exports = router;
+export default router;
