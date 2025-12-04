@@ -15,8 +15,8 @@ router.get('/', auth, function(req, res) {
   res.json(_.toArray(users));
 });
 
-/* Create a new user */
-router.post('/', auth, function(req, res) {
+/* Create a new user -- Unauthenticated */
+router.post('/', function(req, res) {
   console.log('Creating user:', req.body);
 
   var user = req.body;
