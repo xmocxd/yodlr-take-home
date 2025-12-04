@@ -1,5 +1,6 @@
 import express from 'express';
 import _ from 'lodash';
+import auth from '../middleware/auth.js';
 
 import usersData from '../../init_data.json' with { type: 'json' };
 
@@ -10,12 +11,12 @@ const router = express.Router();
 var curId = _.size(users);
 
 /* GET users listing. */
-router.get('/', function(req, res) {
+router.get('/', auth, function(req, res) {
   res.json(_.toArray(users));
 });
 
 /* Create a new user */
-router.post('/', function(req, res) {
+router.post('/', auth, function(req, res) {
   console.log('Creating user:', req.body);
 
   var user = req.body;
@@ -28,7 +29,7 @@ router.post('/', function(req, res) {
 });
 
 /* Get a specific user by id */
-router.get('/:id', function(req, res, next) {
+router.get('/:id', auth, function(req, res, next) {
   var user = users[req.params.id];
   if (!user) {
     return next();
@@ -37,7 +38,7 @@ router.get('/:id', function(req, res, next) {
 });
 
 /* Delete a user by id */
-router.delete('/:id', function(req, res) {
+router.delete('/:id', auth, function(req, res) {
   var user = users[req.params.id];
   delete users[req.params.id];
   res.status(204);
@@ -45,12 +46,12 @@ router.delete('/:id', function(req, res) {
 });
 
 /* Update a user by id */
-router.put('/:id', function(req, res, next) {
+router.put('/:id', auth, function(req, res, next) {
   var user = req.body;
   console.log('Updating user:', req.body);
   console.log('Param id:', req.params.id);
   console.log('Body id:', user.id);
-  
+
   if (user.id != req.params.id) {
     return next(new Error('ID paramter does not match body'));
   }

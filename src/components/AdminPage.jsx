@@ -1,14 +1,33 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function AdminPage() {
     const [users, setUsers] = useState([]);
+    const [adminStatus, setAdminStatus] = useState(false);
+
+    const navigate = useNavigate();
+
+    async function checkAdmin() {
+        try {
+            // browser will automatically send the http-only cookie for the jwt token
+            const response = await axios.get('/api/admin/check', { withCredentials: true });
+            console.log('Protected data fetched:', response.data);
+            setAdminStatus(true);
+        } catch (error) {
+            console.error('Failed to fetch protected data:', error);
+            setAdminStatus(false);
+            navigate('/admin/login');
+        }
+    };
 
     useEffect(() => {
-        refreshUsers();
+        checkAdmin().then(() => {
+            refreshUsers();
+        });
     }, []);
 
-    function refreshUsers() {
+    async function refreshUsers() {
         // get user list and update state
         axios.get('/api/users')
             .then(response => {
@@ -38,12 +57,13 @@ function AdminPage() {
             });
     }
 
+    if (!adminStatus) return null;
     return (
         <div className="max-w-6xl mx-auto min-w-10/12">
             <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl shadow-2xl p-8 border border-slate-700">
                 <h1 className="text-5xl font-bold mb-6 text-white">Admin Page</h1>
                 <p className="text-xl md:text-2xl text-slate-300 font-light mb-8">
-                    View and Modify User Accounts
+                    View and Modify User Accounts <span className="text-green-400">{adminStatus && "-- Admin Access OK"}</span>
                 </p>
                 <p className="text-lg mb-8 font-bold text-blue-300">Registered Users:</p>
                 <div className="text-lg text-slate-300">

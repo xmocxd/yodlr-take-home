@@ -2,10 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
-
-
-
-
 function SignUpPage() {
 
     // initial form state, builds the form within component return based on this structure

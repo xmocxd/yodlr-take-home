@@ -1,15 +1,19 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 function AdminLoginPage() {
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
+    
+    const navigate = useNavigate();
 
     function submit() {
         axios.post('/api/admin/login', { userName, password })
             .then(response => {
                 console.log('Admin login successful:', response.data);
+                navigate('/admin');
             })
             .catch(error => {
                 console.error('Admin login failed:', error);
@@ -18,8 +22,6 @@ function AdminLoginPage() {
     }
 
     return (
-
-
         <div className="max-w-2xl mx-auto min-w-[600px] py-30">
             <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl shadow-2xl p-8 border border-slate-700">
                 <h1 className="text-5xl font-bold mb-6 text-white">Admin Login</h1>
