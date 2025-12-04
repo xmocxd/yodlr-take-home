@@ -4,8 +4,8 @@
 // * Design/layout of content --- DONE
 // * Responsive
 
-// * Admin page should have a password protected route
-// * Users should get a confirmation email
+// * Admin page should have a password protected route -- DONE
+// * Users should get a confirmation email --- TODO
 
 // * Signup form validation --- DONE
 
