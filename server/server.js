@@ -64,6 +64,15 @@ app.get('/admin/check', auth, (req, res) => {
   res.json({ ok: true, user: req.user });
 });
 
+app.post('/admin/logout', (req, res) => {
+  res.clearCookie('jwt', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'Lax'
+  });
+  res.status(200).json({ message: 'Logged out successfully' });
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

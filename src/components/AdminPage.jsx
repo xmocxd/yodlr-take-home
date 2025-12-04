@@ -57,11 +57,33 @@ function AdminPage() {
             });
     }
 
+    async function logout() {
+        try {
+            await axios.post('/api/admin/logout', {}, { withCredentials: true });
+            setAdminStatus(false);
+            navigate('/');
+        } catch (error) {
+            console.error('Error logging out:', error);
+        }
+    }
+
     if (!adminStatus) return null;
     return (
         <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 pt-20 sm:pt-24">
             <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl shadow-2xl p-4 sm:p-6 lg:p-8 border border-slate-700">
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 text-white">Admin Page</h1>
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-4">
+                    <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">Admin Page</h1>
+                    <button 
+                        onClick={logout}
+                        className="rounded-lg bg-slate-700 text-white hover:bg-slate-600 active:bg-slate-500 cursor-pointer py-2 px-4 transition-all duration-200 font-semibold shadow-lg hover:scale-105 transform flex items-center gap-2 text-sm sm:text-base"
+                        title="Logout"
+                    >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        Logout
+                    </button>
+                </div>
                 <p className="text-base sm:text-xl md:text-2xl text-slate-300 font-light mb-6 sm:mb-8">
                     View and Modify User Accounts <span className="text-green-400 block sm:inline mt-2 sm:mt-0">{adminStatus && "-- Admin Access OK"}</span>
                 </p>
