@@ -6,7 +6,8 @@ This project has been modified to use Vite.  To install and start the project:
 
 ```
 npm i
-cd server npm i
+cd server
+npm i
 cd ..
 npm start
 ```
